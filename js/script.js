@@ -16,6 +16,21 @@
 //  1. Formattare le date in formato italiano (gg/mm/aaaa)
 // 2. Gestire l'assenza dell'immagine profilo con un elemento di fallback che contiene le iniziali dell'utente (es. Luca Formicola > LF).
 //  3. Al click su un pulsante "Mi Piace" di un post, se abbiamo già cliccato dobbiamo decrementare il contatore e cambiare il colore del bottone.
+
+/********************************************************
+ * il mio M.O.
+ * faccio una funzione che
+ * creo elementi
+ * if
+ * devo stampare un elemento ∈ Array 
+ * li creo aggiungo classi
+ * poi appendo
+ * else appendo 
+ * e vado avanti 
+ * attraverso un forEach (*definizione* è un metodo dell’oggetto Array che consente di applicare una azione a ciascun elemento di un array percorrendolo in senso discendente (da 1 a n).)
+ * e appendo la funzione (che crea appunto i post).
+ * ***************************************************************
+ */
 const posts = [
     {
         "id": 1,
@@ -91,20 +106,25 @@ function creaElementi(postContainer){
     //img di profilo figlia di post-meta__icon
     //ma bisogna verificare che ci sia questa img 
     // se è presente 
+    //posts.author.image
     if (postContainer.author.image !== null) {
         const postImageMini = document.createElement('img');
         postImageMini.classList.add('profile-pic');
         postImageMini.src = postContainer.author.image;
-        postImageMini.alt = `image profile of ${postContainer.author.name}`
+        postImageMini.alt = postContainer.author.name;
         postMetaIcon.appendChild(postImageMini);
         //invece se non e presente 
     } else {
+        //.split () e il metodo divide le parole in un array di stringe 
+
         const split = postContainer.author.name.split(' ');
+        //prendo l'arrai nelle posizione "name"
+        //prendo le prime due lettere del Array in Posizione "name" e le metto in maiuscolo 
         const iniziali = split[0].charAt(0).toUpperCase() + split[1].charAt(0).toUpperCase();
-        const profilePicDefault = document.createElement('h3');
-        profilePicDefault.classList.add('profile-pic-default');
-        profilePicDefault.innerHTML = iniziali;
-        postMetaIcon.appendChild(profilePicDefault);
+        const profilePicMini = document.createElement('h4');
+        profilePicMini.classList.add('profile-pic-default');
+        profilePicMini.innerHTML = iniziali;
+        postMetaIcon.appendChild(profilePicMini);
     }
     // post Header --> meta data ---> nome e cognome + tempo;
     let postMetaData=document.createElement('div');
@@ -154,8 +174,8 @@ likes.appendChild(likesCta);
 //likeBtn figlio di likesCta
 let likeBtn=document.createElement('a');
 likeBtn.classList.add('like-button','js-like-button')
-likeBtn.href='#';
-likeBtn.dataPostid="1"
+likeBtn.href='#nogo';
+likeBtn.setAttribute("data-postid",postContainer.id );
 likesCta.appendChild(likeBtn);
 //I figlio di LikeBtn
 let ilI=document.createElement('i');
@@ -182,3 +202,38 @@ return post;
 posts.forEach((post) => {
     container.appendChild(creaElementi(post));
 });
+/**********************************
+ * Bonus like 
+ * prendo i bottoni ... (querrySelection(.class));
+ * e creo un array  che dovra contenere i like.
+ * per la lunghezza creo un for 
+ * 
+ */
+ const btns = document.querySelectorAll('.js-like-button');
+ let likeArray = [];
+ 
+ for(let element of btns){
+     element.addEventListener('click',likeClick);
+ }
+ 
+ 
+ function likeClick(){
+     const numeroLike = document.querySelector(`#like-counter-${this.dataset.postid}`);
+     if(!this.classList.contains('like-button--liked')){
+         this.classList.add('like-button--liked');
+         let numero = parseInt(numeroLike.textContent);
+         numero++;
+         numeroLike.textContent = numero;
+         likeArray.push(this.dataset.postid);
+     }else{
+         this.classList.remove('like-button--liked');
+         let numero = parseInt(numeroLike.textContent);
+         numero--;
+         numeroLike.textContent = numero;
+         const index = likeArray.indexOf(this.dataset.postid);
+         likeArray.splice(index,1);
+     }
+    
+ }
+ 
+ 
