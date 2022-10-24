@@ -74,6 +74,7 @@ const posts = [
     }
 ];
 const container=document.getElementById('container')
+container.classList.add('posts-list');
 function creaElementi(postContainer){
     //creo Post 
     let post = document.createElement('div');
@@ -120,4 +121,18 @@ function creaElementi(postContainer){
     postMetaTime.innerHTML=new Date (postContainer.created).toLocaleDateString("eu-EU");
     postMetaData.appendChild(postMetaTime);
 
+   let postText=document.createElement('div') ;
+   postText.classList('post__text');
+   postText.innerHTML=postContainer.content;
+   post.appendChild(post);
+
+   //post img sezione principale 
+   let postImagine=document.createElement(div);
+   postImagine.classList.add("post__imagine");
+   post.appendChild(postImagine);
+
+   let imgPostPrincipale=document.createElement('img');
+   imgPostPrincipale.src=postContainer.media;
+   imgPostPrincipale.alt=random;
+   postImagine.appendChild(imgPostPrincipale);
 }
