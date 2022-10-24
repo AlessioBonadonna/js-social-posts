@@ -78,27 +78,29 @@ container.classList.add('posts-list');
 function creaElementi(postContainer){
     //creo Post 
     let post = document.createElement('div');
-    post.classList('post');
+    post.classList.add('post');
     //sottoclasse di post =post__header
     let postHeader=document.createElement('div');
-    postHeader.classList("post__header");
+    postHeader.classList.add("post__header");
     post.appendChild(postHeader);
     //sottoclasse post__header =post-meta__icon
     let postMetaIcon=document.createElement('div');
-    postMetaIcon.classList('post-meta__icon');
+    postMetaIcon.classList.add('post-meta__icon');
     postHeader.appendChild(postMetaIcon);
     
     //img di profilo figlia di post-meta__icon
     //ma bisogna verificare che ci sia questa img 
+    // se è presente 
     if (postContainer.author.image !== null) {
         const postImageMini = document.createElement('img');
         postImageMini.classList.add('profile-pic');
         postImageMini.src = postContainer.author.image;
         postImageMini.alt = `image profile of ${postContainer.author.name}`
         postMetaIcon.appendChild(postImageMini);
+        //invece se non e presente 
     } else {
-        const splitName = postContainer.author.name.split(' ');
-        const iniziali = splitName[0].charAt(0).toUpperCase() + splitName[1].charAt(0).toUpperCase();
+        const split = postContainer.author.name.split(' ');
+        const iniziali = split[0].charAt(0).toUpperCase() + split[1].charAt(0).toUpperCase();
         const profilePicDefault = document.createElement('h3');
         profilePicDefault.classList.add('profile-pic-default');
         profilePicDefault.innerHTML = iniziali;
@@ -106,38 +108,77 @@ function creaElementi(postContainer){
     }
     // post Header --> meta data ---> nome e cognome + tempo;
     let postMetaData=document.createElement('div');
-    postMetaData.classList('post-meta__data');
+    postMetaData.classList.add('post-meta__data');
     postHeader.appendChild(postMetaData);
     //meta data -->nome & Cognome 
     let postMetaAuthor=document.createElement('div');
-    postMetaAuthor.classList('post-meta__author');
+    postMetaAuthor.classList.add('post-meta__author');
     postMetaAuthor.innerHTML=postContainer.author.name;
     postMetaData.appendChild(postMetaAuthor);
 //meta data --> tempo 
     //Bonus data in EU 
     //new Date(toLocaleDateString("... eu-EU") );
     let postMetaTime=document.createElement('div');
-    postMetaTime.classList('post-meta__time');
+    postMetaTime.classList.add('post-meta__time');
     postMetaTime.innerHTML=new Date (postContainer.created).toLocaleDateString("eu-EU");
     postMetaData.appendChild(postMetaTime);
 
    let postText=document.createElement('div') ;
-   postText.classList('post__text');
+   postText.classList.add('post__text');
    postText.innerHTML=postContainer.content;
-   post.appendChild(post);
+   post.appendChild(postText);
 
    //post img sezione principale 
-   let postImagine=document.createElement(div);
-   postImagine.classList.add("post__imagine");
+   let postImagine=document.createElement('div');
+   postImagine.classList.add("post__image");
    post.appendChild(postImagine);
 
    let imgPostPrincipale=document.createElement('img');
+//    imgPostPrincipale.classList.add('');
    imgPostPrincipale.src=postContainer.media;
-   imgPostPrincipale.alt=random;
+   imgPostPrincipale.alt='random';
    postImagine.appendChild(imgPostPrincipale);
 //sezione con i bottoni 
 let postFooter=document.createElement('div');
-postFooter.classList("post_footer");
+postFooter.classList.add("post_footer");
 post.appendChild(postFooter);
+// likes js-likes figlio di post__footer
 
-}
+let likes=document.createElement('div');
+likes.classList.add("likes", "js-likes");
+postFooter.appendChild(likes);
+//class likesCta figlio di Likes
+let likesCta=document.createElement('div')
+likesCta.classList.add("likes__cta");
+likes.appendChild(likesCta);
+//likeBtn figlio di likesCta
+let likeBtn=document.createElement('a');
+likeBtn.classList.add('like-button','js-like-button')
+likeBtn.href='#';
+likeBtn.dataPostid="1"
+likesCta.appendChild(likeBtn);
+//I figlio di LikeBtn
+let ilI=document.createElement('i');
+ilI.classList.add("like-button__icon", "fas","fa-thumbs-up")
+ilI.ariaHidden='true';
+likeBtn.appendChild(ilI);
+
+//span Figlio di likeBtn
+let spanBtn=document.createElement('span');
+spanBtn.classList.add('like-button__label');
+spanBtn.innerHTML='Mi Piace';
+likeBtn.appendChild(spanBtn);
+
+let likeCounter=document.createElement('div');
+likeCounter.classList.add('likes__counter');
+likeCounter.innerHTML = `Piace a <b id="like-counter-${postContainer.id}" class="js-likes-counter">${postContainer.likes}</b> persone`;
+
+likes.appendChild(likeCounter);
+return post;
+} //fine funzione 
+
+//stampo in html con un forEach
+//commento html  che mi e servito per scivere html
+posts.forEach((post) => {
+    container.appendChild(creaElementi(post));
+});
