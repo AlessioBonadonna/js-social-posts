@@ -135,4 +135,9 @@ function creaElementi(postContainer){
    imgPostPrincipale.src=postContainer.media;
    imgPostPrincipale.alt=random;
    postImagine.appendChild(imgPostPrincipale);
+//sezione con i bottoni 
+let postFooter=document.createElement('div');
+postFooter.classList("post_footer");
+post.appendChild(postFooter);
+
 }
